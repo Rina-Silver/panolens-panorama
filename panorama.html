@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <script src="js/three.min.js"></script>
+        <script src="js/panolens.mod.js"></script>
+        <style>
+            html,
+            body {
+                margin: 0;
+                width: 100%;
+                height: 100%;
+                overflow: hidden;
+                background-color: #000;
+            }
+        </style>
+    </head>
+    <body>
+        <script>
+            const url = new URL(location.href);
+            const radius = url.searchParams.get("radius");
+            const height = url.searchParams.get("height");
+            const img = url.searchParams.get("img");
+            const fov = url.searchParams.get("fov");
+
+            const panorama = new PANOLENS.ImagePanorama(img, radius, height);
+            const viewer = new PANOLENS.Viewer({
+                container: document.body, // A DOM Element container
+                controlBar: false, // Vsibility of bottom control bar
+                controlButtons: [], // Buttons array in the control bar. Default to ['fullscreen', 'setting', 'video']
+                autoHideControlBar: false, // Auto hide control bar
+                autoHideInfospot: true, // Auto hide infospots
+                horizontalView: true, // Allow only horizontal camera control
+                cameraFov: fov, // Camera field of view in degree
+                reverseDragging: false, // Reverse orbit control direction
+                enableReticle: false, // Enable reticle for mouseless interaction
+                dwellTime: 1500, // Dwell time for reticle selection in millisecond
+                autoReticleSelect: true, // Auto select a clickable target after dwellTime
+                viewIndicator: false, // Adds an angle view indicator in upper left corner
+                indicatorSize: 30, // Size of View Indicator
+                output: "console", // Whether and where to output infospot position. Could be 'console' or 'overlay'
+                //autoRotate: true,
+                //autoRotateSpeed: 0.5,
+            });
+            viewer.add(panorama);
+            viewer.OrbitControls.minFov = 55;
+            viewer.OrbitControls.maxFov = 80;
+        </script>
+    </body>
+</html>
